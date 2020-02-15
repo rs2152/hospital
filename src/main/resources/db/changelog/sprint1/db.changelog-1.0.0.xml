@@ -1,0 +1,90 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+
+    <changeSet id="1503460396396-1" author="Ritesh Srivastav">
+
+        <createTable tableName="users">
+            <column autoIncrement="true" name="id" type="BIGINT"><constraints primaryKey="true"/></column>
+            <column name="phone" type="VARCHAR(20)"><constraints unique="true"/></column>
+            <column name="first_name" type="VARCHAR(100)"/>
+            <column name="last_name" type="VARCHAR(100)"/>
+            <column name="registered" type="BOOLEAN" remarks="verify user registration is complete or not" defaultValueBoolean="false"/>
+            <column name="verified" type="BOOLEAN" remarks="verifying the user" defaultValueBoolean="false"/>
+            <column name="access_token" type="LONGTEXT" remarks="access token for user authentication"/>
+            <column name="biography" type="LONGTEXT" remarks="doctor biography"/>
+            <column name="user_id" type="VARCHAR(30)"/>
+            <column name="deleted" type="boolean" defaultValue="false"/>
+            <column name="block" type="boolean" defaultValue="false"/>
+            <column name="email" type="VARCHAR(50)"/>
+            <column name="blood_group" type="VARCHAR(40)" defaultValue="NONE"><constraints nullable="false"/></column>
+            <column name="gender" type="VARCHAR(40)" defaultValue="OTHER"><constraints nullable="false"/></column>
+            <column name="role" type="VARCHAR(40)" defaultValue="OTHER"><constraints nullable="false"/></column>
+            <column name="password" type="VARCHAR(200)"/>
+            <column name="favorite_doctor" type="JSONB"/>
+            <column name="education" type="JSONB"/>
+            <column name="experience" type="JSONB"/>
+            <column name="award" type="JSONB"/>
+            <column name="image_url" type="VARCHAR(255)" remarks="user image"/>
+            <column name="created_at" type="java.sql.Types.TIMESTAMP" remarks="created time"><constraints nullable="false"/></column>
+            <column name="updated_at" type="java.sql.Types.TIMESTAMP" remarks="updated time"><constraints nullable="false"/></column>
+        </createTable>
+        
+        <createTable tableName="appointment">
+            <column autoIncrement="true" name="id" type="BIGINT"><constraints primaryKey="true"/></column>
+            <column name="status" type="VARCHAR(40)" defaultValue="PENDING"><constraints nullable="false"/></column>
+            <column name="doctor_id" type="BIGINT"/>
+            <column name="patient_id" type="BIGINT"/>
+            <column name="start_time" type="TIME"/>
+            <column name="end_time" type="TIME"/>
+            <column name="date" type="DATE"/>
+            <column name="created_at" type="java.sql.Types.TIMESTAMP" remarks="created time"><constraints nullable="false"/></column>
+            <column name="updated_at" type="java.sql.Types.TIMESTAMP" remarks="updated time"><constraints nullable="false"/></column>
+        </createTable>
+        
+        
+        <createTable tableName="clinic">
+            <column autoIncrement="true" name="id" type="BIGINT"><constraints primaryKey="true"/></column>
+            <column name="user_id" type="BIGINT"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="image" type="JSONB"/>
+            <column name="service" type="JSONB"/>
+            <column name="holiday" type="JSONB"/>
+            <column name="specialization" type="JSONB"/>
+            <column name="doctor_id" type="BIGINT"/>
+            <column name="info" type="LONGTEXT" remarks="clinic info"/>
+            <column name="created_at" type="java.sql.Types.TIMESTAMP" remarks="created time"><constraints nullable="false"/></column>
+            <column name="updated_at" type="java.sql.Types.TIMESTAMP" remarks="updated time"><constraints nullable="false"/></column>
+        </createTable>
+
+
+        <createTable tableName="address">
+            <column autoIncrement="true" name="id" type="BIGINT"><constraints primaryKey="true"/></column>
+            <column name="address_line1" type="VARCHAR(200)"/>
+            <column name="address_line2" type="VARCHAR(200)"/>
+            <column name="user_id" type="BIGINT"/>
+            <column name="city" type="VARCHAR(50)"><constraints nullable="false"/></column>
+            <column name="country" type="VARCHAR(50)"><constraints nullable="false"/></column>
+            <column name="state" type="VARCHAR(50)"><constraints nullable="false"/></column>
+            <column name="zip_code" type="VARCHAR(20)"><constraints nullable="false"/></column>
+            <column name="created_at" type="java.sql.Types.TIMESTAMP" remarks="created time"><constraints nullable="false"/></column>
+            <column name="updated_at" type="java.sql.Types.TIMESTAMP" remarks="updated time"><constraints nullable="false"/></column>
+        </createTable>
+
+
+        <addForeignKeyConstraint baseTableName="clinic"
+                                 baseColumnNames="user_id"
+                                 constraintName="fk_clinic_user_id"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE"
+                                 onUpdate="CASCADE"
+        />
+
+
+
+    </changeSet>
+
+</databaseChangeLog>
